@@ -71,7 +71,9 @@ export const knobInputGenerator = {
   },
   [knobTypes.RANGE]: (knob, value, handler) => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('moon-input');
+    if (knob.name === 'moonPhase') {
+      wrapper.classList.add('moon-input');
+    }
     const input = document.createElement('input');
 
     input.setAttribute('type', 'range');

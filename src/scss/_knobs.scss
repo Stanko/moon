@@ -2,15 +2,10 @@
   outline: none;
 
   &:focus {
-    box-shadow: 0 0 0 2px $blue;
-    border-color: $blue;
+    box-shadow: 0 0 0 2px var(--blue);
+    border-color: var(--blue);
   }
 }
-
-$button-light: rgba(0, 0, 0, 0.01);
-$button-still: rgba(0, 0, 0, 0.03);
-$button-hover: rgba(0, 0, 0, 0.05);
-$button-active: rgba(0, 0, 0, 0.08);
 
 .knobs {
   font-size: 14px;
@@ -52,12 +47,12 @@ $button-active: rgba(0, 0, 0, 0.08);
     position: absolute;
 
     &:checked + span {
-      background: $blue;
-      color: $white;
+      background: var(--blue);
+      color: var(--white);
     }
 
     &:focus + span {
-      box-shadow: 0 0 0 3px rgba($blue, 0.3);
+      box-shadow: 0 0 0 3px rgba(var(--blue), 0.3);
     }
   }
 
@@ -69,27 +64,27 @@ $button-active: rgba(0, 0, 0, 0.08);
     padding: 3px 8px;
 
     &:hover {
-      background: $button-hover;
+      background: var(--button-hover);
     }
   }
 
   .radio-options label {
     display: inline-flex;
     align-items: center;
-    border: 1px solid $button-active;
+    border: 1px solid var(--button-active);
     border-right: 0;
-    background: $button-light;
+    background: var(--button-light);
 
     &:last-child {
-      border-right: 1px solid $button-active;
+      border-right: 1px solid var(--button-active);
     }
   }
 
   button:not(.randomize) {
     @include knob-focus;
-    background: $button-still;
+    background: var(--button-still);
     border-radius: 4px;
-    border: 1px solid $button-still;
+    border: 1px solid var(--button-still);
     color: #777;
     font-size: 16px;
     height: 24px;
@@ -98,12 +93,12 @@ $button-active: rgba(0, 0, 0, 0.08);
     width: 24px;
 
     &:hover {
-      background: $button-hover;
+      background: var(--button-hover);
       color: #000;
     }
 
     &:active {
-      background: $button-active;
+      background: var(--button-active);
       transform: translateY(1px);
     }
 
@@ -154,9 +149,9 @@ $button-active: rgba(0, 0, 0, 0.08);
 
 .randomize {
   @include knob-focus;
-  background: $button-still;
+  background: var(--button-still);
   border-radius: 4px;
-  border: 1px solid $button-still;
+  border: 1px solid var(--button-still);
   color: #234;
   font-size: 14px;
   padding: 0 8px;
@@ -164,12 +159,12 @@ $button-active: rgba(0, 0, 0, 0.08);
   height: 32px;
 
   &:hover {
-    background: $button-hover;
+    background: var(--button-hover);
     color: #000;
   }
 
   &:active {
-    background: $button-active;
+    background: var(--button-active);
     transform: translateY(1px);
     color: #000;
   }

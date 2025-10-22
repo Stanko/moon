@@ -14,71 +14,71 @@
 
 // Small
 @mixin sm-only() {
-  @media (max-width: $breakpoint-md - 1) {
+  @media (max-width: 599px) {
     @content;
   }
 }
 
 // Medium breakpoint
 @mixin md() {
-  @media (min-width: $breakpoint-md) {
+  @media (min-width: 600px) {
     @content;
   }
 }
 
 @mixin md-and-lower() {
-  @media (max-width: $breakpoint-lg - 1) {
+  @media (max-width: 899px) {
     @content;
   }
 }
 
 @mixin md-only() {
-  @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
+  @media (min-width: 600px) and (max-width: 899px) {
     @content;
   }
 }
 
 // Large breakpoint
 @mixin lg() {
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: 900px) {
     @content;
   }
 }
 
 @mixin lg-only() {
-  @media (min-width: $breakpoint-lg) and (max-width: $breakpoint-xl - 1) {
+  @media (min-width: 900px) and (max-width: 1199px) {
     @content;
   }
 }
 
 @mixin lg-and-lower() {
-  @media (max-width: $breakpoint-xl - 1) {
+  @media (max-width: 1199px) {
     @content;
   }
 }
 
 // XLarge breakpoint
 @mixin xl() {
-  @media (min-width: $breakpoint-xl) {
+  @media (min-width: 1200px) {
     @content;
   }
 }
 
 @mixin xl-only() {
-  @media (min-width: $breakpoint-xl) and (max-width: $breakpoint-xxl - 1) {
+  @media (min-width: 1200px) and (max-width: 1999px) {
     @content;
   }
 }
 
 @mixin xl-and-lower() {
-  @media (max-width: $breakpoint-xxl - 1) {
+  @media (max-width: 1999px) {
     @content;
   }
 }
 
 // XXLarge breakpoint
 @mixin xxl() {
-  @media (min-width: $breakpoint-xxl) {
+  @media (min-width: 2000px) {
     @content;
   }
 }
