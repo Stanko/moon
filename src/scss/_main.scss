@@ -9,132 +9,55 @@
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  font-size: 16px;
-  background: var(--gray-100);
-  color: var(--black);
-  padding: 12px;
+  font-size: 1rem;
+  background: #f7f8f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #202125;
+  }
 }
 
 input,
 button,
 select,
 textarea {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 button::-moz-focus-inner {
   border: 0;
 }
 
-.svg {
-  display: block;
-  box-shadow: 0 0 5px #ddd;
-  // background: var(--black);
-  max-width: 100% !important;
-  max-height: calc(100vh - 120px) !important;
-  margin-bottom: 10px;
-  width: 800px !important;
-  height: auto !important;
-}
-
-canvas {
-  width: 200px;
-  border-radius: 8px;
-}
-
 svg {
   overflow: visible;
-}
-
-.moon-input {
-  position: relative;
-  margin-left: 8px;
-}
-
-.moon-input input::-webkit-slider-thumb {
-  appearance: none;
-  width: 42px;
-  height: 42px;
-  border: none;
-  background: green;
   display: block;
 }
 
-.moon-input input::-webkit-slider-runnable-track {
-  height: 42px;
-  background: red;
-}
-
-.moon-input input::-moz-range-thumb {
-  appearance: none;
-  width: 42px;
-  height: 42px;
-  border: none;
-}
-
-.moon-range {
-  position: absolute;
-  z-index: 10;
-  height: 100%;
-  width: 100%;
-  margin: 0 !important;
-  opacity: 0;
-  appearance: none;
-}
-
-.moon-images-wrapper {
-  display: flex;
-  margin: 0 !important;
-  pointer-events: none;
-  z-index: 0;
-  position: relative;
-  height: 42px;
-  width: 5 * 42px;
-  /* padding: 0 11px; */
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    transform: translateY(-50%);
-    background-color: var(--gray-200);
-    border: 1px solid var(--gray-400);
-    z-index: -1;
-    border-radius: 20px;
+@keyframes download {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translateY(-15%);
   }
 }
 
-.moon-images {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 250ms;
-}
-
-.moon-images svg {
-  opacity: 0;
-  transition: opacity 100ms;
-  position: absolute;
-}
-
-.moon-range[value='1'] + .moon-images svg:nth-child(1),
-.moon-range[value='2'] + .moon-images svg:nth-child(2),
-.moon-range[value='3'] + .moon-images svg:nth-child(3),
-.moon-range[value='4'] + .moon-images svg:nth-child(4),
-.moon-range[value='5'] + .moon-images svg:nth-child(5) {
-  // opacity: 1;
-}
-
-@for $i from 1 through 5 {
-  .moon-range[value='#{$i}'] + .moon-images-wrapper .moon-images {
-    transform: translateX(#{($i - 1) * 42px});
-  }
-
-  .moon-range[value='#{$i}'] + .moon-images-wrapper svg:nth-child(#{$i}) {
-    opacity: 1;
+.controls-save {
+  &:focus-visible,
+  &:hover {
+    path:nth-child(1),
+    path:nth-child(3) {
+      animation: download 1000ms infinite;
+    }
   }
 }

@@ -6,7 +6,7 @@ export type ColorType = {
   hex: string;
 };
 
-function componentToHex(c) {
+function componentToHex(c: number): string {
   var hex = c.toString(16);
   return hex.length == 1 ? '0' + hex : hex;
 }
@@ -49,7 +49,14 @@ export function getRectColor(ctx: CanvasRenderingContext2D, x: number, y: number
   };
 }
 
-export function drawImageOnCanvas(imageSrc: string, canvasWidth: number, canvasHeight: number) {
+export function drawImageOnCanvas(
+  imageSrc: string,
+  canvasWidth: number,
+  canvasHeight: number,
+): Promise<{
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+}> {
   const canvas: HTMLCanvasElement = document.createElement('canvas');
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
@@ -58,7 +65,7 @@ export function drawImageOnCanvas(imageSrc: string, canvasWidth: number, canvasH
     // This option will save memory on frequent getImageData calls Vertigo is making
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext#willreadfrequently
     willReadFrequently: true,
-  });
+  }) as CanvasRenderingContext2D;
 
   return new Promise((resolve) => {
     const image = new Image();
@@ -81,7 +88,7 @@ export function drawImageOnCanvas(imageSrc: string, canvasWidth: number, canvasH
       }
 
       // Draw the image on the canvas with the calculated dimensions and position
-      ctx?.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+      ctx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
 
       resolve({ canvas, ctx });
     });

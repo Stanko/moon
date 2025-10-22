@@ -1,3 +1,7 @@
+// Breakpoints
+$breakpoint-md: 600px;
+$breakpoint-lg: 1000px;
+
 // Landscape
 @mixin landscape() {
   @media (orientation: landscape) {
@@ -14,71 +18,39 @@
 
 // Small
 @mixin sm-only() {
-  @media (max-width: 599px) {
+  @media (max-width: #{$breakpoint-md - 1}) {
     @content;
   }
 }
 
 // Medium breakpoint
 @mixin md() {
-  @media (min-width: 600px) {
+  @media (min-width: $breakpoint-md) {
     @content;
   }
 }
 
 @mixin md-and-lower() {
-  @media (max-width: 899px) {
+  @media (max-width: #{$breakpoint-lg - 1}) {
     @content;
   }
 }
 
 @mixin md-only() {
-  @media (min-width: 600px) and (max-width: 899px) {
+  @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 1}) {
     @content;
   }
 }
 
 // Large breakpoint
 @mixin lg() {
-  @media (min-width: 900px) {
+  @media (min-width: $breakpoint-lg) {
     @content;
   }
 }
 
 @mixin lg-only() {
-  @media (min-width: 900px) and (max-width: 1199px) {
-    @content;
-  }
-}
-
-@mixin lg-and-lower() {
-  @media (max-width: 1199px) {
-    @content;
-  }
-}
-
-// XLarge breakpoint
-@mixin xl() {
-  @media (min-width: 1200px) {
-    @content;
-  }
-}
-
-@mixin xl-only() {
-  @media (min-width: 1200px) and (max-width: 1999px) {
-    @content;
-  }
-}
-
-@mixin xl-and-lower() {
-  @media (max-width: 1999px) {
-    @content;
-  }
-}
-
-// XXLarge breakpoint
-@mixin xxl() {
-  @media (min-width: 2000px) {
+  @media (min-width: $breakpoint-lg) and (max-width: #{$breakpoint-xl - 1}) {
     @content;
   }
 }
