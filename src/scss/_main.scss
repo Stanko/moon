@@ -127,8 +127,8 @@ canvas {
 
 .canvas-wrapper {
   aspect-ratio: 1;
-  border: 1px solid rgb(240 240 255 / 0.2);
-  border-radius: 12px;
+  border-radius: 4px;
+  max-width: 100px;
   background: black;
   overflow: hidden;
 }
