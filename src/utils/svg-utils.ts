@@ -15,7 +15,7 @@ const getCircle = (center: Point, r: number, props: Record<string, any> = {}) =>
 };
 
 const getPath = (path: Point[], isClosed = true, props: Record<string, any> = {}) => {
-  const points = path.map((p) => `${p.x} ${p.y}`).join(' L ');
+  const points = path.map((p) => `${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(' L ');
 
   const d = `M ${points} ${isClosed ? 'Z' : ''}`;
   const attributes = [];

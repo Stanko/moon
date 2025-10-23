@@ -15,6 +15,10 @@
   margin: 0;
   appearance: none;
   padding: 0;
+
+  &:active + .moon-control__phases-wrapper svg {
+    filter: brightness(0.9);
+  }
 }
 
 // Webkit
@@ -24,7 +28,6 @@
   width: var(--phase-w);
   height: var(--phase-w);
   border: none;
-  background: green;
   display: block;
   opacity: 0;
 }
@@ -54,21 +57,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  transition: margin-left 250ms;
 }
 
 .moon-control__phases svg {
   opacity: 0;
-  transition: opacity 100ms;
   position: absolute;
-}
-
-.moon-control input[value='1'] + .moon-control__phases svg:nth-child(1),
-.moon-control input[value='2'] + .moon-control__phases svg:nth-child(2),
-.moon-control input[value='3'] + .moon-control__phases svg:nth-child(3),
-.moon-control input[value='4'] + .moon-control__phases svg:nth-child(4),
-.moon-control input[value='5'] + .moon-control__phases svg:nth-child(5) {
-  // opacity: 1;
 }
 
 @for $i from 1 through 5 {

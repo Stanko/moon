@@ -1,8 +1,42 @@
 import getDrawingData from './index';
 import type { Options } from '../utils/options-type';
+import svgUtils from '../utils/svg-utils';
+
+const thresholds = {
+  WHITE: 1,
+  SILVER: 0.9,
+  BRONZE: 0.7,
+  GOLD: 0.6,
+  GRAY: 0.55,
+};
+
+// Numbers are used for plotting order
+const colorMap = {
+  '5-gray': '#909090',
+  '4-gold': '#FFD700',
+  '3-bronze': '#cd9f72',
+  '2-silver': '#c0c0c0',
+  '1-white': '#ffffff',
+};
+
+type LayerName = keyof typeof colorMap;
+
+function getLayerName(value: number) {
+  if (value <= thresholds.GRAY) {
+    return '5-gray';
+  } else if (value <= thresholds.GOLD) {
+    return '4-gold';
+  } else if (value <= thresholds.BRONZE) {
+    return '3-bronze';
+  } else if (value <= thresholds.SILVER) {
+    return '2-silver';
+  } else {
+    return '1-white';
+  }
+}
 
 export default async function render(options: Options): Promise<SVGElement> {
-  const { size: width, size: height } = options;
+  const { size: width, size: height, lineWidth, plottingHelpers } = options;
 
   // ----- SVG init ----- //
   const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -24,96 +58,61 @@ export default async function render(options: Options): Promise<SVGElement> {
   // Add current URL with parameters into the SVG
   let svgContent = `\n<!-- ${window.location.href} -->\n`;
 
-  const thresholds = {
-    WHITE: 1,
-    SILVER: 0.9,
-    BRONZE: 0.7,
-    GOLD: 0.6,
-    GRAY: 0.55,
+  const layers: Record<LayerName, string[]> = {
+    '5-gray': [],
+    '4-gold': [],
+    '3-bronze': [],
+    '2-silver': [],
+    '1-white': [],
   };
 
-  function getColor(value: number) {
-    const colors = {
-      gray: '#909090',
-      gold: '#FFD700',
-      bronze: '#cd9f72',
-      silver: '#c0c0c0',
-      white: '#ffffff',
-    };
+  if (options.whiteOnly) {
+    layers['1-white'] = data.map((line) => {
+      return svgUtils.getPath(line.points, false);
+    });
+  } else {
+    data.forEach((line) => {
+      const layerName = getLayerName(line.brightness);
 
-    // TODO add a control for it
-    // Add some random colors in
-    // if (random() > 0.95) {
-    //   return colors.gold;
-    // } else if (random() > 0.95) {
-    //   return colors.bronze;
-    // }
-
-    if (value <= thresholds.GRAY) {
-      return colors.gray;
-    } else if (value <= thresholds.GOLD) {
-      return colors.gold;
-    } else if (value <= thresholds.BRONZE) {
-      return colors.bronze;
-    } else if (value <= thresholds.SILVER) {
-      return colors.silver;
-    } else {
-      return colors.white;
-    }
+      layers[layerName].push(svgUtils.getPath(line.points, false));
+    });
   }
 
-  function getColorName(value: number) {
-    if (value <= thresholds.GRAY) {
-      return '5-gray';
-    } else if (value <= thresholds.GOLD) {
-      return '4-gold';
-    } else if (value <= thresholds.BRONZE) {
-      return '3-bronze';
-    } else if (value <= thresholds.SILVER) {
-      return '2-silver';
-    } else {
-      return '1-white';
-    }
-  }
-
-  const colorGroups: Record<
-    string,
-    {
-      id: string;
-      paths: string[];
-    }
-  > = {};
-
-  data.forEach((circle) => {
-    const color = getColor(circle.brightness);
-
-    if (!colorGroups[color]) {
-      colorGroups[color] = {
-        id: getColorName(circle.brightness),
-        paths: [],
-      };
-    }
-
-    colorGroups[color].paths.push(
-      `<path d="M ${circle.x} ${circle.y} Q ${circle.p2.x} ${circle.p2.y} ${circle.p3.x} ${circle.p3.y}"  />`,
-    );
-  });
-
-  const stroke = 6;
+  const stroke = lineWidth;
   const strokeHalf = stroke / 2;
-  const helper = 50;
+  const helperLength = 5; // 5mm
 
-  colorGroups[Object.keys(colorGroups)[0]].paths.push(
-    `<path d="M ${width + strokeHalf} ${height + helper + strokeHalf} v -${helper} h ${helper}" fill="none" />`,
-  );
+  const keys = Object.keys(layers) as LayerName[];
 
-  Object.keys(colorGroups).forEach((color) => {
-    svgContent += `<g id="${colorGroups[color].id}"
+  if (plottingHelpers) {
+    // Push plotting helper to the first layer
+    svgContent += `<g id="0-plotting-helpers" fill="none" stroke-width="1" stroke="rgb(255 0 255 / 0.5)">
+        <rect
+          width="${width}"
+          height="${height}"
+          x="0"
+          y="0"
+          vector-effect="non-scaling-stroke"
+          fill="none"
+          stroke-width="1"
+        />
+        <path
+          d="M ${width + strokeHalf} ${height + helperLength + strokeHalf} v -${helperLength} h ${helperLength}"
+          vector-effect="non-scaling-stroke"
+        />
+    </g>`;
+  }
+
+  keys.forEach((layerName) => {
+    svgContent += `<g id="${layerName}"
       stroke-width="${stroke}"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke="${color}"
-    >${colorGroups[color].paths.join('\n')}</g>`;
+      fill="none"
+      stroke="${colorMap[layerName]}"
+    >
+      ${layers[layerName].join('\n')}
+    </g>`;
   });
 
   svgElement.innerHTML = svgContent;

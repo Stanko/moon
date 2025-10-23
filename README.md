@@ -1,29 +1,10 @@
-# My boilerplate for generative projects
+# Moon Phases
 
-This is a boilerplate I use to start all of [my generative projects](https://muffinman.io/art).
+An algorithmic drawing of a moon. Play with demo online [muffinman.io/moon](https://muffinman.io/moon) or check the pen plots:
 
-## New project checklist
+* https://muffinman.io/art/moon/
+<!--* https://muffinman.io/art/moon-white/-->
 
- - Update `package.json` - replace `@stanko/generative-init`
- - Update `index.html` - change title of the project
- - Define custom controls/options in [src/drawing/options-config.ts](./src/drawing/options-config.ts)
+# Full moon 27
 
-## Features
-
-- Custom controls/options to control the drawing (fully typed)
-- Separated compute and render phases
-- SVG rendering only
-- Save SVG
-- Options are stored in URL hash (which enables native navigation)
-- Small utils - random, memoization, svg...
-- Clipper2ZFactory helpers
-- Couple of small touches - for example, each set of options will have their own title and favicon
-
-## TODO
-
-- Fix sizing of the SVG
-- Make controls sticky/fixed on desktop
-- Vector utils (`Vec2` and `Vec3`)
-- Display values for range and dual-range
-- Move `Controls` to a separate package
-- Remove sass as a dependency
+- http://localhost:1234/#/debug:false/size:270/min-distance:0.5/points-per-line:2/segment-length:0.2/line-width:0.5/white-only:true/moon-phase:4/noise-scale:137/main-seed:creature-title-who/noise-seed:without-mirror-shall/easing:0.73,0.15,0.78,0.89

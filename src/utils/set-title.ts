@@ -1,6 +1,4 @@
-import random from './random';
 import type { Options } from './options-type';
-import Alea from './alea';
 
 const getIcon = (dark: string, light: string, phase: number) => {
   const canvas = document.createElement('canvas');
@@ -8,8 +6,6 @@ const getIcon = (dark: string, light: string, phase: number) => {
   canvas.height = 64;
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   ctx.fillStyle = light;
-
-  console.log(light, dark);
 
   const map: Record<number, { x: number; y: number; bg: string; fg: string }> = {
     1: {
@@ -66,6 +62,15 @@ const getIcon = (dark: string, light: string, phase: number) => {
   ctx.fillStyle = settings.fg;
   ctx.fill();
 
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = dark;
+  ctx.stroke();
+
   return canvas.toDataURL();
 };
 
@@ -74,21 +79,13 @@ const setTitle = (options: Options, title = '') => {
     title += ' • ';
   }
 
-  const rng = Alea(JSON.stringify(options));
-  const h = random(0, 360, rng, 0).toString();
-
-  const color = `oklch(0.7 0.3 ${h})`;
-  const darkColor = `oklch(0.3 0.3 ${h})`;
+  const color = `oklch(0.85 0 0)`;
+  const darkColor = `oklch(0.4 0 0)`;
   const icon = getIcon(darkColor, color, options.moonPhase);
 
   console.log('%c  ', `background: ${color}`, options.mainSeed);
 
   const iconElement = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
-
-  // Probably should be removed
-  // Testing colors for now
-  const controlsElement = document.querySelector('.ctrls') as HTMLElement;
-  controlsElement.style.setProperty('--ctrls-h', h);
 
   iconElement.setAttribute('href', icon);
 

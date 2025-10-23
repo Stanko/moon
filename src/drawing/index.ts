@@ -1,103 +1,105 @@
 import memoize from '../utils/memoize';
-import { drawImageOnCanvas, getRectColor } from '../utils/color';
+import { drawImageOnCanvas, getRectColor, type CanvasData } from '../utils/color';
 import { createNoise2D } from 'simplex-noise';
 import PoissonDiskSampling from 'poisson-disk-sampling';
 import type { Options } from '../utils/options-type';
 
 type Line = {
-  x: number;
-  y: number;
   hex: string;
   angle: number;
-  p2: {
-    x: number;
-    y: number;
-  };
-  p3: {
-    x: number;
-    y: number;
-  };
   brightness: number;
   r: number;
   g: number;
   b: number;
+  points: {
+    x: number;
+    y: number;
+  }[];
 };
 
 type DrawingData = Line[];
 
-async function getDrawingData(options: Options): Promise<DrawingData> {
+function getLines(options: Options, canvasData: CanvasData): DrawingData {
   const {
-    size: width,
-    size: height,
-    // mainSeedRng,
+    size,
     noiseSeedRng,
-    easingEasing: easingFn,
-    // debug,
-    moonPhase,
+    easingEasing,
     noiseScale,
+    minDistance,
+    pointsPerLine,
+    segmentLength,
   } = options;
 
   const noise = createNoise2D(noiseSeedRng);
 
-  // --------- Main logic
-
-  const canvasData = await drawImageOnCanvas(`/images/${moonPhase}.jpg`, width, height);
-
-  const canvasDiv = document.querySelector('.canvas-wrapper') as HTMLDivElement;
-  canvasDiv.replaceChildren(canvasData.canvas);
-
-  const MIN_DISTANCE = 5;
-
   let timer;
+
+  // ----- POISSON ----- //
 
   console.time((timer = 'poisson'));
   const p = new PoissonDiskSampling({
-    shape: [width, height],
-    minDistance: MIN_DISTANCE,
-    maxDistance: MIN_DISTANCE * 10,
+    shape: [size, size],
+    minDistance: minDistance,
+    maxDistance: minDistance * 10,
     tries: 40,
     distanceFunction: function ([x, y]) {
-      const { brightness } = getRectColor(canvasData.ctx, x, y, MIN_DISTANCE);
+      const { brightness } = getRectColor(canvasData.ctx, x, y, minDistance);
 
-      return easingFn(1 - brightness);
-      // return Math.pow(1 - brightness, 2.7);
+      return easingEasing(1 - brightness);
     },
   });
 
   const points = p.fill();
   console.timeEnd(timer);
 
-  console.time((timer = 'colors'));
-  const colors: Line[] = [];
+  // ----- LINES ----- //
+
+  console.time((timer = 'lines'));
+  const lines: Line[] = [];
   points.forEach(([x, y]) => {
-    const colorData = getRectColor(canvasData.ctx, x, y, MIN_DISTANCE);
+    const colorData = getRectColor(canvasData.ctx, x, y, minDistance);
 
     if (colorData.brightness > 0.1) {
-      const angle = noise(x / noiseScale, y / noiseScale) * Math.PI;
-      const r = 3 * colorData.brightness * colorData.brightness * colorData.brightness;
-      const p2 = { x: x + Math.cos(angle) * r, y: y + Math.sin(angle) * r };
+      const points = [{ x, y }];
 
-      const angle2 = noise(p2.x / noiseScale, p2.y / noiseScale) * Math.PI;
-      const p3 = { x: p2.x + Math.cos(angle2) * r, y: p2.y + Math.sin(angle2) * r };
+      if (pointsPerLine > 1) {
+        for (let i = 0; i < pointsPerLine; i++) {
+          const last = points[points.length - 1];
+          const { x, y } = last;
+          const angle = noise(x / noiseScale, y / noiseScale) * Math.PI;
+          const r = segmentLength * Math.pow(colorData.brightness, 3);
+          const p = { x: x + Math.cos(angle) * r, y: y + Math.sin(angle) * r };
+          points.push(p);
+        }
+      } else {
+        points.push({ x, y: y + 0.01 });
+      }
 
-      colors.push({
+      lines.push({
         ...colorData,
-        x,
-        y,
+        points,
         r: 2,
         angle: noise(x / noiseScale, y / noiseScale) * Math.PI,
-        p2,
-        p3,
       });
     }
   });
   console.timeEnd(timer);
 
-  return colors;
+  return lines;
 }
 
-const memoizedGetDrawingData = memoize<Promise<DrawingData>>(
-  getDrawingData as (options: unknown) => Promise<DrawingData>,
+const memoizedCalculate = memoize<DrawingData>(
+  getLines as (options: unknown, canvasData: unknown) => DrawingData,
 );
 
-export default memoizedGetDrawingData;
+export default async function getDrawingData(options: Options): Promise<DrawingData> {
+  const { size, moonPhase } = options;
+
+  // --------- Main logic
+
+  const canvasData = await drawImageOnCanvas(`/images/${moonPhase}.jpg`, size, size);
+  const canvasDiv = document.querySelector('.canvas-wrapper') as HTMLDivElement;
+  canvasDiv.replaceChildren(canvasData.canvas);
+
+  return memoizedCalculate(options, canvasData);
+}

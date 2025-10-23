@@ -17,6 +17,7 @@ export function rgbToHex(r: number, g: number, b: number): string {
 
 export function getRectColor(ctx: CanvasRenderingContext2D, x: number, y: number, rectWidth: number = 1): ColorType {
   const offset = Math.floor(rectWidth / 2);
+  rectWidth = Math.max(rectWidth, 1);
   const imageData = ctx.getImageData(x - offset, y - offset, rectWidth, rectWidth);
 
   let r = 0;
@@ -49,14 +50,12 @@ export function getRectColor(ctx: CanvasRenderingContext2D, x: number, y: number
   };
 }
 
-export function drawImageOnCanvas(
-  imageSrc: string,
-  canvasWidth: number,
-  canvasHeight: number,
-): Promise<{
+export type CanvasData = {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-}> {
+};
+
+export function drawImageOnCanvas(imageSrc: string, canvasWidth: number, canvasHeight: number): Promise<CanvasData> {
   const canvas: HTMLCanvasElement = document.createElement('canvas');
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;

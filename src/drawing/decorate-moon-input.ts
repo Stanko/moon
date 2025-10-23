@@ -1,8 +1,8 @@
-import { controls } from '..';
+import { controls } from '../controls';
 import { moonPhaseIcons } from '../utils/moon-phase-icons';
 
 export const decorateMoonInput = () => {
-  const wrapper = document.querySelectorAll('.ctrls__control--range')[1] as HTMLLabelElement;
+  const wrapper = document.querySelector('.ctrls__control--range:has(#ctrls__moon-phase)') as HTMLLabelElement;
   wrapper.classList.add('moon-control');
   const right = wrapper.querySelector('.ctrls__control-right') as HTMLDivElement;
   const input = wrapper.querySelector('.ctrls__range-input') as HTMLInputElement;

@@ -33,9 +33,21 @@ body {
 
 .ctrls {
   --ctrls-width: 22rem;
+  --ctrls-c: 0.05;
+  --ctrls-bg: oklch(0.99 0 var(--ctrls-h) / 0.8);
+  --ctrls-text: oklch(0.01 0 var(--ctrls-h));
+  --ctrls-text-muted: oklch(0.5 0 var(--ctrls-h));
+
   width: var(--ctrls-width);
   max-width: 100%;
-  margin-bottom: 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    // Backgrounds and text
+    --ctrls-c: 0.15;
+    --ctrls-bg: oklch(0.27 0 var(--ctrls-h) / 0.8);
+    --ctrls-text: oklch(0.95 0 var(--ctrls-h)); // text
+    --ctrls-text-muted: oklch(0.75 0 var(--ctrls-h));
+  }
 
   @include breakpoints.md {
     --ctrls-label-width: 7rem;
@@ -57,23 +69,36 @@ body {
   }
 }
 
+.loader,
 .drawing svg {
   background: black;
   margin: 0 auto;
   max-width: 100%;
-  border: 1px solid rgb(0 0 0 / 0.075);
   border-radius: 8px;
   max-width: 100%;
   max-height: 100%;
 }
 
+.loader {
+  color: white;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-family:
+    ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
 canvas {
-  max-width: 100%;
-  width: 150px;
-  border-radius: 12px;
-  border: 1px solid rgb(70 70 80);
-  outline-offset: -1px;
-  z-index: 1;
-  position: relative;
   display: block;
+  width: 100%;
+}
+
+.canvas-wrapper {
+  aspect-ratio: 1;
+  border: 1px solid rgb(240 240 255 / 0.2);
+  border-radius: 12px;
+  background: black;
+  overflow: hidden;
 }
