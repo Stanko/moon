@@ -1,20 +1,25 @@
 import mem from 'mem';
+import type { Options } from './options-type';
 
 export default function memoize<T>(fn: (...args: unknown[]) => T) {
   return mem(fn, {
     cacheKey: (args) => {
-      const key = args
-        .map((arg) => {
-          if (typeof arg === 'function') {
-            const fn = arg as any;
-            return fn.displayName ? fn.displayName : arg.toString();
-          } else {
-            return JSON.stringify(arg);
-          }
-        })
-        .join(',');
+      const options = args[0] as Options;
 
-      return key;
+      return [
+        options.size,
+        options.minDistance,
+        options.pointsPerLine,
+        options.segmentLength,
+        options.moonPhase,
+        options.noiseScale,
+        options.noiseSeed,
+        options.mainSeed,
+        options.easing,
+        options.lineWidth,
+      ]
+        .map((item) => item.toString())
+        .join('_');
     },
   });
 }

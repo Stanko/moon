@@ -83,7 +83,7 @@ const setTitle = (options: Options, title = '') => {
   const darkColor = `oklch(0.4 0 0)`;
   const icon = getIcon(darkColor, color, options.moonPhase);
 
-  console.log('%c  ', `background: ${color}`, options.mainSeed);
+  console.log('* options changed, main seed:', options.mainSeed);
 
   const iconElement = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
 

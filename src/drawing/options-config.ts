@@ -14,7 +14,7 @@ export const config = [
     min: 50,
     step: 1,
     max: 400,
-    defaultValue: 145,
+    defaultValue: 270,
   },
   {
     name: 'minDistance',
@@ -39,21 +39,21 @@ export const config = [
     min: 0.2,
     step: 0.1,
     max: 10,
-    defaultValue: 2,
+    defaultValue: 0.2,
   },
   {
     name: 'lineWidth',
     type: 'range',
     isRandomizationDisabled: true,
-    min: 0.1,
+    min: 0.3,
     step: 0.05,
     max: 3,
-    defaultValue: 1,
+    defaultValue: 0.5,
   },
   {
     name: 'whiteOnly',
     type: 'boolean',
-    defaultValue: false,
+    defaultValue: true,
   },
   {
     name: 'moonPhase',
@@ -84,14 +84,10 @@ export const config = [
   {
     name: 'easing',
     type: 'easing',
-    defaultValue: [0.73, 0.15, 0.87, 0.62],
+    defaultValue: [0.73, 0.15, 0.78, 0.89],
     presets: {
-      DEFAULT: [0.73, 0.15, 0.87, 0.62],
-      EASE: [0.25, 0.1, 0.25, 1],
-      LINEAR: [0, 0, 1, 1],
-      EASE_IN: [0.42, 0, 1, 1],
-      EASE_OUT: [0, 0, 0.58, 1],
-      EASE_IN_OUT: [0.42, 0, 0.58, 1],
+      PRESET_1: [0.73, 0.15, 0.78, 0.89],
+      PRESET_2: [0.73, 0.15, 0.87, 0.62],
     },
   },
   {

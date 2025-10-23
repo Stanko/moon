@@ -51,7 +51,7 @@ export default async function render(options: Options): Promise<SVGElement> {
   const data = await getDrawingData(options);
   console.timeEnd('drawing data');
 
-  console.log(data);
+  console.log(data.length + ' lines');
 
   // ----- Render ----- //
   console.time('svg render');
