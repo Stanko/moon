@@ -15,7 +15,12 @@ export function rgbToHex(r: number, g: number, b: number): string {
   return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-export function getRectColor(ctx: CanvasRenderingContext2D, x: number, y: number, rectWidth: number = 1): ColorType {
+export function getRectColor(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  rectWidth: number = 1,
+): ColorType {
   const offset = Math.floor(rectWidth / 2);
   rectWidth = Math.max(rectWidth, 1);
   const imageData = ctx.getImageData(x - offset, y - offset, rectWidth, rectWidth);
@@ -55,10 +60,16 @@ export type CanvasData = {
   ctx: CanvasRenderingContext2D;
 };
 
-export function drawImageOnCanvas(imageSrc: string, canvasWidth: number, canvasHeight: number): Promise<CanvasData> {
+export function drawImageOnCanvas(
+  imageSrc: string,
+  canvasWidth: number,
+  canvasHeight: number,
+): Promise<CanvasData> {
   const canvas: HTMLCanvasElement = document.createElement('canvas');
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
+
+  console.log(imageSrc);
 
   const ctx = canvas.getContext('2d', {
     // This option will save memory on frequent getImageData calls Vertigo is making

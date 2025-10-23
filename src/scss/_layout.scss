@@ -20,10 +20,8 @@ body {
 
 .controls {
   margin-top: auto;
-
-  @include breakpoints.md-only {
-    grid-template-columns: repeat(2, calc(50% - 0.25rem));
-  }
+  display: flex;
+  justify-content: center;
 
   @include breakpoints.lg {
     align-self: flex-start;
@@ -33,13 +31,11 @@ body {
 
 .ctrls {
   --ctrls-width: 22rem;
+  --ctrls-label-width: 7rem;
   --ctrls-c: 0.05;
   --ctrls-bg: oklch(0.99 0 var(--ctrls-h) / 0.8);
   --ctrls-text: oklch(0.01 0 var(--ctrls-h));
   --ctrls-text-muted: oklch(0.5 0 var(--ctrls-h));
-
-  width: var(--ctrls-width);
-  max-width: 100%;
 
   @media (prefers-color-scheme: dark) {
     // Backgrounds and text
@@ -49,8 +45,12 @@ body {
     --ctrls-text-muted: oklch(0.75 0 var(--ctrls-h));
   }
 
+  width: 100%;
+  max-width: 100%;
+
   @include breakpoints.md {
-    --ctrls-label-width: 7rem;
+    width: var(--ctrls-width);
+    --ctrls-label-width: 8rem;
   }
 }
 

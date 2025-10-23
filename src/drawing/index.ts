@@ -92,14 +92,17 @@ const memoizedCalculate = memoize<DrawingData>(
   getLines as (options: unknown, canvasData: unknown) => DrawingData,
 );
 
-export default async function getDrawingData(options: Options): Promise<DrawingData> {
+export default async function getDrawingData(
+  options: Options,
+  imageURL?: string,
+): Promise<DrawingData> {
   const { size, moonPhase } = options;
 
   // --------- Main logic
 
-  const canvasData = await drawImageOnCanvas(`./images/${moonPhase}.jpg`, size, size);
+  const canvasData = await drawImageOnCanvas(imageURL || `./images/${moonPhase}.jpg`, size, size);
   const canvasDiv = document.querySelector('.canvas-wrapper') as HTMLDivElement;
   canvasDiv.replaceChildren(canvasData.canvas);
 
-  return memoizedCalculate(options, canvasData);
+  return memoizedCalculate({ ...options, imageURL }, canvasData);
 }

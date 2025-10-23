@@ -4,6 +4,6 @@ import { Ctrls } from '@stanko/ctrls';
 const controlsDiv = document.querySelector('.controls') as HTMLDivElement;
 
 export const controls = new Ctrls(config, {
-  title: 'Moon Phases',
+  title: 'Options',
   parent: controlsDiv,
 });

@@ -2,7 +2,9 @@ import { controls } from '../controls';
 import { moonPhaseIcons } from '../utils/moon-phase-icons';
 
 export const decorateMoonInput = () => {
-  const wrapper = document.querySelector('.ctrls__control--range:has(#ctrls__moon-phase)') as HTMLLabelElement;
+  const wrapper = document.querySelector(
+    '.ctrls__control--range:has(#ctrls__moon-phase)',
+  ) as HTMLLabelElement;
   wrapper.classList.add('moon-control');
   const right = wrapper.querySelector('.ctrls__control-right') as HTMLDivElement;
   const input = wrapper.querySelector('.ctrls__range-input') as HTMLInputElement;
@@ -21,7 +23,13 @@ export const decorateMoonInput = () => {
   const values = controls.getValues();
   input.setAttribute('value', values.moonPhase.toString());
 
-  controls.onInput = () => {
+  // onInput is already set in the index file, save it
+  const onInput = controls.onInput;
+
+  controls.onInput = (updatedValues) => {
+    // Call the original onInput function
+    onInput?.(updatedValues);
+
     const values = controls.getValues();
     input.setAttribute('value', values.moonPhase.toString());
   };

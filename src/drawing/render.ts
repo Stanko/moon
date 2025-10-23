@@ -35,7 +35,7 @@ function getLayerName(value: number) {
   }
 }
 
-export default async function render(options: Options): Promise<SVGElement> {
+export default async function render(options: Options, imageURL?: string): Promise<SVGElement> {
   const { size: width, size: height, lineWidth, plottingHelpers } = options;
 
   // ----- SVG init ----- //
@@ -48,7 +48,7 @@ export default async function render(options: Options): Promise<SVGElement> {
 
   // TODO add default memoization for "getDrawingData"
   console.time('drawing data');
-  const data = await getDrawingData(options);
+  const data = await getDrawingData(options, imageURL);
   console.timeEnd('drawing data');
 
   console.log(data.length + ' lines');
