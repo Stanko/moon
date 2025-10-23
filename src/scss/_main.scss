@@ -10,18 +10,30 @@ html {
   font-size: 100%;
 }
 
+:root {
+  --bg: #f7f8f9;
+  --fg: #111;
+  --link: #668;
+  --link-underline: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #202125;
+    --fg: #eee;
+
+    --link: #99b;
+    --link-underline: #555;
+  }
+}
+
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 1rem;
-  background: #f7f8f9;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #202125;
-  }
+  background: var(--bg);
+  color: var(--fg);
 }
 
 input,
@@ -45,6 +57,31 @@ button::-moz-focus-inner {
 svg {
   overflow: visible;
   display: block;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.info__links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.info__link {
+  color: var(--link);
+  font-size: 0.875rem;
+  text-decoration-line: underline;
+  text-decoration-color: var(--link-underline);
+
+  &:hover {
+    color: var(--fg);
+    text-decoration-color: var(--fg);
+  }
 }
 
 @keyframes download {
@@ -81,4 +118,17 @@ svg {
   margin-left: 0;
   flex-grow: 1;
   display: block;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+}
+
+.canvas-wrapper {
+  aspect-ratio: 1;
+  border: 1px solid rgb(240 240 255 / 0.2);
+  border-radius: 12px;
+  background: black;
+  overflow: hidden;
 }
