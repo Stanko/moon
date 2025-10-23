@@ -1,3 +1,21 @@
+:root {
+  --bg: #f7f8f9;
+  --fg: #111;
+  --link: #668;
+  --link-underline: #ccd;
+  --scrollbar: #bbc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #202125;
+    --fg: #eee;
+    --link: #99b;
+    --link-underline: #556;
+    --scrollbar: #556;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -8,23 +26,7 @@
 
 html {
   font-size: 100%;
-}
-
-:root {
-  --bg: #f7f8f9;
-  --fg: #111;
-  --link: #668;
-  --link-underline: #ccc;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #202125;
-    --fg: #eee;
-
-    --link: #99b;
-    --link-underline: #555;
-  }
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 body {

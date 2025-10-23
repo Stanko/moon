@@ -46,16 +46,16 @@ body {
   --ctrls-width: 22rem;
   --ctrls-label-width: 7rem;
   --ctrls-c: 0.05;
-  --ctrls-bg: oklch(0.99 0 var(--ctrls-h) / 0.8);
-  --ctrls-text: oklch(0.01 0 var(--ctrls-h));
-  --ctrls-text-muted: oklch(0.5 0 var(--ctrls-h));
+  --ctrls-bg: oklch(0.99 0.005 var(--ctrls-h) / 0.8);
+  --ctrls-text: oklch(0.01 0.005 var(--ctrls-h));
+  --ctrls-text-muted: oklch(0.5 0.005 var(--ctrls-h));
 
   @media (prefers-color-scheme: dark) {
     // Backgrounds and text
     --ctrls-c: 0.15;
-    --ctrls-bg: oklch(0.27 0 var(--ctrls-h) / 0.8);
-    --ctrls-text: oklch(0.95 0 var(--ctrls-h)); // text
-    --ctrls-text-muted: oklch(0.75 0 var(--ctrls-h));
+    --ctrls-bg: oklch(0.27 0.005 var(--ctrls-h) / 0.8);
+    --ctrls-text: oklch(0.95 0.005 var(--ctrls-h)); // text
+    --ctrls-text-muted: oklch(0.75 0.005 var(--ctrls-h));
   }
 
   width: 100%;
