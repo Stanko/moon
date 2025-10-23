@@ -97,7 +97,7 @@ export default async function getDrawingData(options: Options): Promise<DrawingD
 
   // --------- Main logic
 
-  const canvasData = await drawImageOnCanvas(`/images/${moonPhase}.jpg`, size, size);
+  const canvasData = await drawImageOnCanvas(`./images/${moonPhase}.jpg`, size, size);
   const canvasDiv = document.querySelector('.canvas-wrapper') as HTMLDivElement;
   canvasDiv.replaceChildren(canvasData.canvas);
 

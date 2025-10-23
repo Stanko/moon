@@ -2,8 +2,8 @@
 
 An algorithmic drawing of a moon. Play with demo online [muffinman.io/moon](https://muffinman.io/moon) or check the pen plots:
 
-* https://muffinman.io/art/moon/
-<!--* https://muffinman.io/art/moon-white/-->
+* [muffinman.io/art/moon/](https://muffinman.io/art/moon/)
+<!--* [muffinman.io/art/moon-white/](https://muffinman.io/art/moon-white/)-->
 
 # Full moon 27
 
