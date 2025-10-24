@@ -3,6 +3,7 @@ import { drawImageOnCanvas, getRectColor, type CanvasData } from '../utils/color
 import { createNoise2D } from 'simplex-noise';
 import PoissonDiskSampling from 'poisson-disk-sampling';
 import type { Options } from '../utils/options-type';
+import mem from 'mem';
 
 type Line = {
   hex: string;
@@ -19,24 +20,9 @@ type Line = {
 
 type DrawingData = Line[];
 
-function getLines(options: Options, canvasData: CanvasData): DrawingData {
-  const {
-    size,
-    noiseSeedRng,
-    easingEasing,
-    noiseScale,
-    minDistance,
-    pointsPerLine,
-    segmentLength,
-  } = options;
+const getPoints = (options: Options, canvasData: CanvasData) => {
+  const { size, easingEasing, minDistance } = options;
 
-  const noise = createNoise2D(noiseSeedRng);
-
-  let timer;
-
-  // ----- POISSON ----- //
-
-  console.time((timer = 'poisson'));
   const p = new PoissonDiskSampling({
     shape: [size, size],
     minDistance: minDistance,
@@ -49,13 +35,32 @@ function getLines(options: Options, canvasData: CanvasData): DrawingData {
     },
   });
 
-  const points = p.fill();
-  console.timeEnd(timer);
+  return p.fill();
+};
 
-  // ----- LINES ----- //
+const getPointsMemoized = mem(getPoints, {
+  cacheKey: (args) => {
+    const options = args[0] as Options & { imageURL: string };
 
-  console.time((timer = 'lines'));
+    return JSON.stringify([
+      options.size,
+      options.moonPhase,
+      options.minDistance,
+      options.mainSeed,
+      options.easing,
+      options.imageURL || '',
+    ]);
+  },
+});
+
+const getLines = (options: Options, points: number[][], canvasData: CanvasData): DrawingData => {
+  const { noiseSeedRng, noiseScale, minDistance, pointsPerLine, segmentLength } = options;
+
+  console.log('---', options.noiseSeed);
+  const noise = createNoise2D(noiseSeedRng);
+
   const lines: Line[] = [];
+
   points.forEach(([x, y]) => {
     const colorData = getRectColor(canvasData.ctx, x, y, minDistance);
 
@@ -83,19 +88,52 @@ function getLines(options: Options, canvasData: CanvasData): DrawingData {
       });
     }
   });
+
+  return lines;
+};
+
+const getLinesMemoized = mem(getLines, {
+  cacheKey: (args) => {
+    const options = args[0] as Options & { imageURL: string };
+
+    return JSON.stringify([
+      options.noiseSeed,
+      options.noiseScale,
+      options.minDistance,
+      options.pointsPerLine,
+      options.segmentLength,
+      // Points deps
+      options.size,
+      options.moonPhase,
+      options.minDistance,
+      options.mainSeed,
+      options.easing,
+      options.imageURL || '',
+    ]);
+  },
+});
+
+const calculate = (options: Options, canvasData: CanvasData): DrawingData => {
+  let timer;
+
+  // ----- POISSON ----- //
+  console.time((timer = 'poisson'));
+  const points = getPointsMemoized(options, canvasData);
+  console.timeEnd(timer);
+
+  // ----- LINES ----- //
+  console.time((timer = 'lines'));
+  const lines: Line[] = getLinesMemoized(options, points, canvasData);
   console.timeEnd(timer);
 
   return lines;
-}
+};
 
 const memoizedCalculate = memoize<DrawingData>(
-  getLines as (options: unknown, canvasData: unknown) => DrawingData,
+  calculate as (options: unknown, canvasData: unknown) => DrawingData,
 );
 
-export default async function getDrawingData(
-  options: Options,
-  imageURL?: string,
-): Promise<DrawingData> {
+const getDrawingData = async (options: Options, imageURL?: string): Promise<DrawingData> => {
   const { size, moonPhase } = options;
 
   // --------- Main logic
@@ -105,4 +143,6 @@ export default async function getDrawingData(
   canvasDiv.replaceChildren(canvasData.canvas);
 
   return memoizedCalculate({ ...options, imageURL }, canvasData);
-}
+};
+
+export default getDrawingData;

@@ -15,7 +15,7 @@
     "vite": "^7.1.11"
   },
   "dependencies": {
-    "@stanko/ctrls": "^0.1.8",
+    "@stanko/ctrls": "^0.1.9",
     "bezier-easing": "^2.1.0",
     "mem": "^10.0.0",
     "poisson-disk-sampling": "^2.3.1",
